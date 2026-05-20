@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title data-i18n="homePageTitle">Latam 3000</title>
+    <link rel="stylesheet" href="styles.css" />
+    <script src="script.js" defer></script>
+  </head>
+  <body class="home-page">
+    <header class="site-header site-shell">
+      <div class="brand-actions">
+        <a class="site-mark" href="index.html">LATAM 3000</a>
+        <div class="lang-switch" aria-label="Language switch">
+          <button class="lang-button lang-flag-button" type="button" data-lang-switch="es" aria-pressed="false" aria-label="Spanish">
+            <span class="flag flag-pe" aria-hidden="true"></span>
+          </button>
+          <button class="lang-button lang-flag-button" type="button" data-lang-switch="en" aria-pressed="true" aria-label="English">
+            <span class="flag flag-uk" aria-hidden="true"></span>
+          </button>
+        </div>
+      </div>
+      <nav class="site-nav" aria-label="Main navigation">
+        <a class="is-active" href="index.html" aria-current="page" data-i18n="navHome">Home</a>
+        <a href="booking.html" data-i18n="navBooking">Booking</a>
+        <a href="resources.html" data-i18n="navResources">Resources</a>
+      </nav>
+    </header>
+
+    <section class="banner" aria-label="Latam 3000 image banner" data-i18n-aria-label="homeBannerAriaLabel">
+      <div class="banner-frame" data-banner-frame>
+        <!-- Slides are injected from script.js (random order, all files in Pictures/Horizontal). -->
+      </div>
+      <div class="banner-overlay">
+        <p data-i18n="bannerOverlay">live_signal // latin_rhythms // cyber_club_archive</p>
+      </div>
+    </section>
+
+    <main class="site-shell">
+      <section class="intro-panel">
+        <p class="eyebrow" data-i18n="homeEyebrow">Home / Broadcast</p>
+        <h1>Latam 3000</h1>
+        <p class="intro-copy" data-i18n="homeIntro">
+          DJ project focused on Latin rhythms, early internet energy, and futuristic club sounds.
+        </p>
+      </section>
+
+      <section class="info-grid" aria-label="Project details" data-i18n-aria-label="homeDetailsAriaLabel">
+        <article class="panel">
+          <p class="panel-label" data-i18n="systemNoteLabel">System Note</p>
+          <p data-i18n="systemNoteText">
+            Underground club identity with low-fi web textures, sharp interfaces, and a direct signal
+            from Latin American nightlife.
+          </p>
+        </article>
+        <article class="panel">
+          <p class="panel-label" data-i18n="genresLabel">Genres</p>
+          <ul class="signal-list">
+            <li data-i18n="genreLatincore">latincore</li>
+            <li data-i18n="genreLatinclub">latinclub</li>
+            <li data-i18n="genreNeoperreo">neoperreo</li>
+            <li data-i18n="genreDeconstructedClub">deconstructed club</li>
+            <li data-i18n="genreNeocumbia">neocumbia</li>
+          </ul>
+        </article>
+        <article class="panel">
+          <p class="panel-label" data-i18n="statusLabel">Status</p>
+          <p data-i18n="statusText">Available for clubs, bars, independent parties, art spaces, and hybrid live/DJ formats.</p>
+        </article>
+      </section>
+
+      <section class="gallery-section" aria-labelledby="gallery-title">
+        <div class="section-heading">
+          <p class="eyebrow" data-i18n="visualArchiveEyebrow">Visual Archive</p>
+          <h2 id="gallery-title" data-i18n="visualArchiveTitle">Vertical Feed</h2>
+        </div>
+
+        <div class="visual-grid">
+          <!-- Vertical archive: pre-baked site look (invert + grayscale + contrast) in Pictures/InvertedVertical. -->
+          <article class="visual-card">
+            <img src="Pictures/InvertedVertical/DSC09287.jpg" alt="Latam 3000 visual archive 1" />
+            <div class="visual-copy">
+              <p class="panel-label" data-i18n="frame01Label">Frame_01</p>
+              <p>DSC09287.jpg</p>
+            </div>
+          </article>
+
+          <article class="visual-card">
+            <img src="Pictures/InvertedVertical/DSC09401.jpg" alt="Latam 3000 visual archive 2" />
+            <div class="visual-copy">
+              <p class="panel-label" data-i18n="frame02Label">Frame_02</p>
+              <p>DSC09401.jpg</p>
+            </div>
+          </article>
+
+          <article class="visual-card">
+            <img src="Pictures/InvertedVertical/DSC09481.jpg" alt="Latam 3000 visual archive 3" />
+            <div class="visual-copy">
+              <p class="panel-label" data-i18n="frame03Label">Frame_03</p>
+              <p>DSC09481.jpg</p>
+            </div>
+          </article>
+
+          <article class="visual-card">
+            <img src="Pictures/InvertedVertical/DSC09494.jpg" alt="Latam 3000 visual archive 4" />
+            <div class="visual-copy">
+              <p class="panel-label" data-i18n="frame04Label">Frame_04</p>
+              <p>DSC09494.jpg</p>
+            </div>
+          </article>
+
+          <article class="visual-card">
+            <img src="Pictures/InvertedVertical/DSC09503.jpg" alt="Latam 3000 visual archive 5" />
+            <div class="visual-copy">
+              <p class="panel-label" data-i18n="frame05Label">Frame_05</p>
+              <p>DSC09503.jpg</p>
+            </div>
+          </article>
+        </div>
+      </section>
+    </main>
+  </body>
+</html>
