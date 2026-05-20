@@ -185,15 +185,13 @@ function buildBannerOrderWithClusterCooldown(filenames, cooldownTurns) {
 
 function ensureBannerCycleKeyframesStyle(slideCount) {
   const pct = 100 / slideCount;
-  const visibleEnd = Math.max(pct - 0.02, 0.01);
-  const hiddenStart = Math.min(pct + 0.01, 99.99);
   const css = `@keyframes banner-cycle-dynamic {
   0%,
-  ${visibleEnd}% {
+  ${pct}% {
     opacity: 1;
   }
 
-  ${hiddenStart}%,
+  ${pct}%,
   100% {
     opacity: 0;
   }
@@ -259,11 +257,9 @@ function initializeHomeBanner() {
     img.src = `${bannerHorizontalWebBase}/${filename}`;
     img.alt = `Latam 3000 banner — ${filename}`;
     img.decoding = "async";
+    img.loading = "eager";
     if (index === 0) {
-      img.loading = "eager";
       img.fetchPriority = "high";
-    } else {
-      img.loading = "lazy";
     }
 
     figure.appendChild(img);
@@ -344,5 +340,125 @@ function initializeLanguageSwitch() {
   });
 }
 
+const visualCarouselCloneAttr = "data-carousel-clone";
+
+function measureVisualCarouselCycleWidth(grid) {
+  const slides = grid.querySelectorAll(":scope > .visual-card");
+  if (slides.length < 6) {
+    return 0;
+  }
+  return slides[5].offsetLeft - slides[0].offsetLeft;
+}
+
+function setupVisualFeedInfiniteScroll(grid) {
+  if (grid.__visualCarouselOnScroll) {
+    grid.removeEventListener("scroll", grid.__visualCarouselOnScroll);
+  }
+
+  const onScroll = () => {
+    if (grid.__visualCarouselJumping) {
+      return;
+    }
+    const cycle = measureVisualCarouselCycleWidth(grid);
+    if (cycle <= 0) {
+      return;
+    }
+    const max = grid.scrollWidth - grid.clientWidth;
+    const x = grid.scrollLeft;
+    const edge = Math.max(10, cycle * 0.06);
+    if (x <= edge) {
+      grid.__visualCarouselJumping = true;
+      grid.style.scrollBehavior = "auto";
+      grid.scrollLeft = x + cycle;
+      requestAnimationFrame(() => {
+        grid.style.scrollBehavior = "";
+        grid.__visualCarouselJumping = false;
+      });
+    } else if (x >= max - edge) {
+      grid.__visualCarouselJumping = true;
+      grid.style.scrollBehavior = "auto";
+      grid.scrollLeft = x - cycle;
+      requestAnimationFrame(() => {
+        grid.style.scrollBehavior = "";
+        grid.__visualCarouselJumping = false;
+      });
+    }
+  };
+
+  grid.__visualCarouselOnScroll = onScroll;
+  grid.addEventListener("scroll", onScroll, { passive: true });
+}
+
+function teardownVisualCarousel(grid) {
+  if (grid.__visualCarouselOnScroll) {
+    grid.removeEventListener("scroll", grid.__visualCarouselOnScroll);
+    grid.__visualCarouselOnScroll = null;
+  }
+  grid.querySelectorAll(`[${visualCarouselCloneAttr}]`).forEach((node) => node.remove());
+  grid.scrollLeft = 0;
+}
+
+function syncVisualCarousel(grid) {
+  const originals = Array.from(grid.querySelectorAll(`:scope > .visual-card:not([${visualCarouselCloneAttr}])`));
+  if (originals.length !== 5) {
+    return;
+  }
+
+  const [f1, f2, f3, f4, f5] = originals;
+
+  [f4, f5].forEach((card) => {
+    const clone = card.cloneNode(true);
+    clone.setAttribute(visualCarouselCloneAttr, "1");
+    grid.insertBefore(clone, grid.firstChild);
+  });
+  [f1, f2].forEach((card) => {
+    const clone = card.cloneNode(true);
+    clone.setAttribute(visualCarouselCloneAttr, "1");
+    grid.appendChild(clone);
+  });
+
+  requestAnimationFrame(() => {
+    f3.scrollIntoView({ inline: "center", block: "nearest" });
+    setupVisualFeedInfiniteScroll(grid);
+  });
+}
+
+function initializeVisualFeedCarousel() {
+  const grid = document.querySelector(".home-page [data-visual-feed]");
+  if (!grid) {
+    return;
+  }
+
+  const mq = window.matchMedia("(max-width: 640px)");
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+  const apply = () => {
+    teardownVisualCarousel(grid);
+    if (mq.matches && !reduceMotion.matches) {
+      syncVisualCarousel(grid);
+    }
+  };
+
+  if (typeof mq.addEventListener === "function") {
+    mq.addEventListener("change", apply);
+  } else {
+    mq.addListener(apply);
+  }
+  if (typeof reduceMotion.addEventListener === "function") {
+    reduceMotion.addEventListener("change", apply);
+  } else {
+    reduceMotion.addListener(apply);
+  }
+
+  let resizeTimer;
+  window.addEventListener("resize", () => {
+    window.clearTimeout(resizeTimer);
+    resizeTimer = window.setTimeout(apply, 160);
+  });
+
+  apply();
+}
+
 initializeLanguageSwitch();
 initializeHomeBanner();
+initializeVisualFeedCarousel();
