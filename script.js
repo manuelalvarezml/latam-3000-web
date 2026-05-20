@@ -112,7 +112,10 @@ const translations = {
 const storageKey = "latam3000-language";
 const defaultLanguage = "en";
 
-/** Every JPEG in Pictures/Horizontal (static site: list must match files on disk). */
+/** Served from Pictures/Horizontal/Web (scaled JPEGs; regenerate with scripts/optimize-web-images.sh). */
+const bannerHorizontalWebBase = "Pictures/Horizontal/Web";
+
+/** Basenames matching Pictures/Horizontal/*.jpg (scaled copies live in Pictures/Horizontal/Web/). */
 const bannerHorizontalFilenames = [
   "DSC09372-Enhanced-NR_inverted.jpg",
   "DSC09372k-Enhanced-NR.jpg",
@@ -225,7 +228,7 @@ function initializeHomeBanner() {
     const figure = document.createElement("figure");
     figure.className = "banner-slide is-static-hero";
     const img = document.createElement("img");
-    img.src = `Pictures/Horizontal/${filename}`;
+    img.src = `${bannerHorizontalWebBase}/${filename}`;
     img.alt = `Latam 3000 banner — ${filename}`;
     img.loading = "eager";
     img.fetchPriority = "high";
@@ -237,6 +240,12 @@ function initializeHomeBanner() {
   ensureBannerCycleKeyframesStyle(n);
   const totalDuration = n * bannerSecondsPerSlide;
 
+  const preload = document.createElement("link");
+  preload.rel = "preload";
+  preload.as = "image";
+  preload.href = `${bannerHorizontalWebBase}/${names[0]}`;
+  document.head.appendChild(preload);
+
   names.forEach((filename, index) => {
     const figure = document.createElement("figure");
     figure.className = "banner-slide";
@@ -247,11 +256,14 @@ function initializeHomeBanner() {
     figure.style.animationDelay = `${index * bannerSecondsPerSlide}s`;
 
     const img = document.createElement("img");
-    img.src = `Pictures/Horizontal/${filename}`;
+    img.src = `${bannerHorizontalWebBase}/${filename}`;
     img.alt = `Latam 3000 banner — ${filename}`;
-    img.loading = "eager";
+    img.decoding = "async";
     if (index === 0) {
+      img.loading = "eager";
       img.fetchPriority = "high";
+    } else {
+      img.loading = "lazy";
     }
 
     figure.appendChild(img);

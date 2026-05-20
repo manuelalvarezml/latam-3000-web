@@ -29,7 +29,7 @@
 
     <section class="banner" aria-label="Latam 3000 image banner" data-i18n-aria-label="homeBannerAriaLabel">
       <div class="banner-frame" data-banner-frame>
-        <!-- Slides are injected from script.js (random order, all files in Pictures/Horizontal). -->
+        <!-- Banner slides load from Pictures/Horizontal/Web (see script.js). -->
       </div>
       <div class="banner-overlay">
         <p data-i18n="bannerOverlay">live_signal // latin_rhythms // cyber_club_archive</p>
@@ -75,10 +75,17 @@
           <h2 id="gallery-title" data-i18n="visualArchiveTitle">Vertical Feed</h2>
         </div>
 
+        <!-- Gallery uses Pictures/InvertedVertical/Web (lightweight); masters stay in InvertedVertical/. -->
         <div class="visual-grid">
-          <!-- Vertical archive: pre-baked site look (invert + grayscale + contrast) in Pictures/InvertedVertical. -->
           <article class="visual-card">
-            <img src="Pictures/InvertedVertical/DSC09287.jpg" alt="Latam 3000 visual archive 1" />
+            <img
+              src="Pictures/InvertedVertical/Web/DSC09287.jpg"
+              alt="Latam 3000 visual archive 1"
+              loading="lazy"
+              decoding="async"
+              width="900"
+              height="1200"
+            />
             <div class="visual-copy">
               <p class="panel-label" data-i18n="frame01Label">Frame_01</p>
               <p>DSC09287.jpg</p>
@@ -86,7 +93,14 @@
           </article>
 
           <article class="visual-card">
-            <img src="Pictures/InvertedVertical/DSC09401.jpg" alt="Latam 3000 visual archive 2" />
+            <img
+              src="Pictures/InvertedVertical/Web/DSC09401.jpg"
+              alt="Latam 3000 visual archive 2"
+              loading="lazy"
+              decoding="async"
+              width="900"
+              height="1200"
+            />
             <div class="visual-copy">
               <p class="panel-label" data-i18n="frame02Label">Frame_02</p>
               <p>DSC09401.jpg</p>
@@ -94,7 +108,14 @@
           </article>
 
           <article class="visual-card">
-            <img src="Pictures/InvertedVertical/DSC09481.jpg" alt="Latam 3000 visual archive 3" />
+            <img
+              src="Pictures/InvertedVertical/Web/DSC09481.jpg"
+              alt="Latam 3000 visual archive 3"
+              loading="lazy"
+              decoding="async"
+              width="900"
+              height="1200"
+            />
             <div class="visual-copy">
               <p class="panel-label" data-i18n="frame03Label">Frame_03</p>
               <p>DSC09481.jpg</p>
@@ -102,7 +123,14 @@
           </article>
 
           <article class="visual-card">
-            <img src="Pictures/InvertedVertical/DSC09494.jpg" alt="Latam 3000 visual archive 4" />
+            <img
+              src="Pictures/InvertedVertical/Web/DSC09494.jpg"
+              alt="Latam 3000 visual archive 4"
+              loading="lazy"
+              decoding="async"
+              width="900"
+              height="1200"
+            />
             <div class="visual-copy">
               <p class="panel-label" data-i18n="frame04Label">Frame_04</p>
               <p>DSC09494.jpg</p>
@@ -110,7 +138,14 @@
           </article>
 
           <article class="visual-card">
-            <img src="Pictures/InvertedVertical/DSC09503.jpg" alt="Latam 3000 visual archive 5" />
+            <img
+              src="Pictures/InvertedVertical/Web/DSC09503.jpg"
+              alt="Latam 3000 visual archive 5"
+              loading="lazy"
+              decoding="async"
+              width="900"
+              height="1200"
+            />
             <div class="visual-copy">
               <p class="panel-label" data-i18n="frame05Label">Frame_05</p>
               <p>DSC09503.jpg</p>
