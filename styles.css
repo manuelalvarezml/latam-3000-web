@@ -320,6 +320,7 @@ h2 {
 
 .gallery-section {
   margin-top: 1.5rem;
+  overflow-anchor: none;
 }
 
 .section-heading {
@@ -548,6 +549,7 @@ h2 {
     gap: 0.75rem;
     overflow-x: auto;
     overflow-y: hidden;
+    overflow-anchor: none;
     scroll-snap-type: x mandatory;
     scroll-behavior: smooth;
     -webkit-overflow-scrolling: touch;

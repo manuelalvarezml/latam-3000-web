@@ -398,6 +398,15 @@ function teardownVisualCarousel(grid) {
   grid.scrollLeft = 0;
 }
 
+function scrollCarouselToCenterSlide(grid, slide) {
+  const maxScroll = grid.scrollWidth - grid.clientWidth;
+  if (maxScroll <= 0) {
+    return;
+  }
+  const target = slide.offsetLeft + slide.offsetWidth / 2 - grid.clientWidth / 2;
+  grid.scrollLeft = Math.max(0, Math.min(target, maxScroll));
+}
+
 function syncVisualCarousel(grid) {
   const originals = Array.from(grid.querySelectorAll(`:scope > .visual-card:not([${visualCarouselCloneAttr}])`));
   if (originals.length !== 5) {
@@ -418,8 +427,11 @@ function syncVisualCarousel(grid) {
   });
 
   requestAnimationFrame(() => {
-    f3.scrollIntoView({ inline: "center", block: "nearest" });
-    setupVisualFeedInfiniteScroll(grid);
+    scrollCarouselToCenterSlide(grid, f3);
+    requestAnimationFrame(() => {
+      scrollCarouselToCenterSlide(grid, f3);
+      setupVisualFeedInfiniteScroll(grid);
+    });
   });
 }
 
