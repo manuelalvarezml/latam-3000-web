@@ -10,23 +10,25 @@
     <script src="script.js" defer></script>
   </head>
   <body>
-    <header class="site-header site-shell">
-      <div class="brand-actions">
-        <a class="site-mark" href="index.html">LATAM 3000</a>
-        <div class="lang-switch" aria-label="Language switch">
-          <button class="lang-button lang-flag-button" type="button" data-lang-switch="es" aria-pressed="false" aria-label="Spanish">
-            <span class="flag flag-pe" aria-hidden="true"></span>
-          </button>
-          <button class="lang-button lang-flag-button" type="button" data-lang-switch="en" aria-pressed="true" aria-label="English">
-            <span class="flag flag-uk" aria-hidden="true"></span>
-          </button>
+    <header class="site-header">
+      <div class="site-header-inner">
+        <div class="brand-actions">
+          <a class="site-mark" href="index.html">LATAM 3000</a>
+          <div class="lang-switch" aria-label="Language switch">
+            <button class="lang-button lang-flag-button" type="button" data-lang-switch="es" aria-pressed="false" aria-label="Spanish">
+              <span class="flag flag-pe" aria-hidden="true"></span>
+            </button>
+            <button class="lang-button lang-flag-button" type="button" data-lang-switch="en" aria-pressed="true" aria-label="English">
+              <span class="flag flag-uk" aria-hidden="true"></span>
+            </button>
+          </div>
         </div>
+        <nav class="site-nav" aria-label="Main navigation">
+          <a href="index.html" data-i18n="navHome">Home</a>
+          <a class="is-active" href="booking.html" aria-current="page" data-i18n="navBooking">Booking</a>
+          <a href="resources.html" data-i18n="navResources">Resources</a>
+        </nav>
       </div>
-      <nav class="site-nav" aria-label="Main navigation">
-        <a href="index.html" data-i18n="navHome">Home</a>
-        <a class="is-active" href="booking.html" aria-current="page" data-i18n="navBooking">Booking</a>
-        <a href="resources.html" data-i18n="navResources">Resources</a>
-      </nav>
     </header>
 
     <main class="site-shell booking-page">

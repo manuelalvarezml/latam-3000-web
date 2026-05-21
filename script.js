@@ -14,7 +14,7 @@ const translations = {
     homeEyebrow: "Home / Broadcast",
     homeIntro: "DJ project focused on Latin rhythms, early internet energy, and futuristic club sounds.",
     systemNoteLabel: "System Note",
-    systemNoteText: "Underground club identity with low-fi web textures, sharp interfaces, and a direct signal from Latin American nightlife.",
+    systemNoteText: "Underground club identity with hard mixes, nostalgic references, communal floor energy, and a direct signal from Latin American nightlife.",
     genresLabel: "Genres",
     genreLatincore: "latincore",
     genreLatinclub: "latinclub",
@@ -68,7 +68,7 @@ const translations = {
     homeEyebrow: "Inicio / Transmision",
     homeIntro: "Proyecto de DJ enfocado en ritmos latinos, energia de internet temprana y sonidos futuristas de club.",
     systemNoteLabel: "Nota Del Sistema",
-    systemNoteText: "Identidad underground de club con texturas low-fi web, interfaces filosas y una senal directa de la noche latinoamericana.",
+    systemNoteText: "Identidad underground de club con mezclas duras, referencias nostalgicas, energia de pista comunitaria y una senal directa de la noche latinoamericana.",
     genresLabel: "Generos",
     genreLatincore: "latincore",
     genreLatinclub: "latinclub",
@@ -323,6 +323,43 @@ function applyTranslations(language) {
   });
 }
 
+function initializeStickyHeaderScrollState() {
+  const header = document.querySelector(".site-header");
+  if (!header) {
+    return;
+  }
+
+  const scrollDownThreshold = 28;
+  const scrollUpThreshold = 6;
+  let isScrolled = false;
+  let rafId = 0;
+
+  const sync = () => {
+    const y = window.scrollY || document.documentElement.scrollTop || 0;
+    if (!isScrolled && y > scrollDownThreshold) {
+      isScrolled = true;
+      header.classList.add("is-scrolled");
+    } else if (isScrolled && y < scrollUpThreshold) {
+      isScrolled = false;
+      header.classList.remove("is-scrolled");
+    }
+  };
+
+  const onScroll = () => {
+    if (rafId) {
+      return;
+    }
+    rafId = window.requestAnimationFrame(() => {
+      rafId = 0;
+      sync();
+    });
+  };
+
+  window.addEventListener("scroll", onScroll, { passive: true });
+  window.addEventListener("resize", sync, { passive: true });
+  sync();
+}
+
 function initializeLanguageSwitch() {
   const initialLanguage = getStoredLanguage();
   applyTranslations(initialLanguage);
@@ -472,5 +509,6 @@ function initializeVisualFeedCarousel() {
 }
 
 initializeLanguageSwitch();
+initializeStickyHeaderScrollState();
 initializeHomeBanner();
 initializeVisualFeedCarousel();

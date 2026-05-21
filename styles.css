@@ -3,7 +3,8 @@
   --fg: #ffffff;
   --accent: #ff0000;
   --border: 2px solid var(--fg);
-  --page-width: min(1100px, calc(100vw - 2rem));
+  /* Use layout % (not 100vw) so width matches whether a vertical scrollbar is present — long pages like Resources stay aligned with Home/Booking. */
+  --page-width: min(1100px, calc(100% - 2rem));
 }
 
 * {
@@ -12,11 +13,13 @@
 
 html {
   scroll-behavior: smooth;
+  scrollbar-gutter: stable;
 }
 
 body {
   margin: 0;
   min-height: 100vh;
+  min-width: 0;
   background:
     linear-gradient(rgba(255, 0, 0, 0.14), rgba(255, 0, 0, 0.14)),
     repeating-linear-gradient(
@@ -35,6 +38,7 @@ body {
 img {
   display: block;
   width: 100%;
+  max-width: 100%;
   /* Keep all site imagery inverted and reduced to a tight monochrome flyer treatment. */
   filter: invert(1) grayscale(1) contrast(1.2);
 }
@@ -44,16 +48,66 @@ a {
 }
 
 .site-shell {
+  box-sizing: border-box;
   width: var(--page-width);
+  max-width: 100%;
   margin: 0 auto;
+  min-width: 0;
+  /* Clip wide main content without touching the header — overflow on html/body breaks position:sticky for the nav bar. */
+  overflow-x: hidden;
 }
 
 .site-header {
-  display: flex;
+  position: sticky;
+  top: 0;
+  z-index: 200;
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  padding: 0;
+  background: rgba(0, 0, 0, 0.94);
+  border-bottom: 2px solid var(--fg);
+  isolation: isolate;
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    backdrop-filter 0.2s ease;
+}
+
+.site-header-inner {
+  box-sizing: border-box;
+  width: var(--page-width);
+  max-width: 100%;
+  margin-inline: auto;
+  min-width: 0;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
   align-items: center;
-  justify-content: space-between;
   gap: 1rem;
-  padding: 1rem 0;
+  padding-block: 1rem;
+  padding-inline: 0;
+  transition: padding-block 0.28s ease, gap 0.28s ease;
+}
+
+.site-header.is-scrolled {
+  background: rgba(0, 0, 0, 0.55);
+  border-bottom-color: rgba(255, 255, 255, 0.32);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .site-header.is-scrolled {
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+  }
+}
+
+.site-header.is-scrolled .site-mark,
+.site-header.is-scrolled .site-nav a {
+  background: rgba(0, 0, 0, 0.55);
+}
+
+.site-header.is-scrolled .lang-switch {
+  background: rgba(0, 0, 0, 0.55);
 }
 
 .brand-actions {
@@ -65,8 +119,9 @@ a {
 
 .site-mark,
 .site-nav a {
-  display: inline-flex;
+  display: flex;
   align-items: center;
+  justify-content: center;
   min-height: 2.75rem;
   padding: 0.4rem 0.85rem;
   border: var(--border);
@@ -75,6 +130,8 @@ a {
   text-decoration: none;
   text-transform: uppercase;
   letter-spacing: 0.1em;
+  transition: background-color 0.2s ease;
+  min-width: 0;
 }
 
 .site-mark {
@@ -82,9 +139,11 @@ a {
 }
 
 .site-nav {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 0.5rem;
+  width: 100%;
+  min-width: 0;
 }
 
 .lang-switch {
@@ -92,6 +151,7 @@ a {
   border: var(--border);
   background: var(--bg);
   overflow: hidden;
+  transition: background-color 0.2s ease;
 }
 
 .lang-button {
@@ -299,6 +359,7 @@ h2 {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 1rem;
+  min-width: 0;
 }
 
 .signal-list,
@@ -420,6 +481,9 @@ h2 {
 
 .resources-page {
   padding-top: 0.5rem;
+  /* Long filenames / monospace tokens must not widen min-content past the shell or the header column drifts vs Home/Booking. */
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
 .resource-card {
@@ -427,12 +491,14 @@ h2 {
   border: var(--border);
   background: rgba(0, 0, 0, 0.9);
   overflow: hidden;
+  min-width: 0;
 }
 
 .resource-card img {
   aspect-ratio: 1 / 1;
   object-fit: cover;
   filter: none;
+  min-width: 0;
 }
 
 .resource-card.is-vertical img {
@@ -447,12 +513,16 @@ h2 {
   padding: 1rem;
   border-top: var(--border);
   background: rgba(0, 0, 0, 0.94);
+  min-width: 0;
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
 .resource-copy a {
   display: inline-flex;
   align-items: center;
   min-height: 2.5rem;
+  max-width: 100%;
   padding: 0.35rem 0.8rem;
   border: var(--border);
   text-decoration: none;
@@ -486,33 +556,51 @@ h2 {
 
 @media (max-width: 640px) {
   :root {
-    --page-width: min(100vw - 1rem, 100%);
+    --page-width: min(calc(100% - 1rem), 100%);
   }
 
-  .site-header {
+  .site-header-inner {
+    grid-template-columns: 1fr;
     align-items: stretch;
-    flex-direction: column;
+    gap: 0.75rem;
+    padding-block: 0.75rem;
   }
 
   .brand-actions {
     align-items: center;
+    max-height: 6rem;
+    opacity: 1;
+    overflow: hidden;
+    transition:
+      max-height 0.32s ease,
+      opacity 0.22s ease;
   }
 
-  .site-mark,
+  .site-header.is-scrolled .site-header-inner {
+    gap: 0;
+    padding-block: 0.5rem;
+  }
+
+  .site-header.is-scrolled .brand-actions {
+    max-height: 0;
+    opacity: 0;
+    pointer-events: none;
+  }
+
   .site-nav a {
-    justify-content: center;
-  }
-
-  .site-nav {
-    width: 100%;
-  }
-
-  .site-nav a {
-    flex: 1;
+    min-height: 2.5rem;
+    font-size: 0.82rem;
   }
 
   .lang-switch {
     align-self: auto;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .brand-actions,
+    .site-header-inner {
+      transition: none;
+    }
   }
 
   .banner-frame {
@@ -553,7 +641,6 @@ h2 {
     scroll-snap-type: x mandatory;
     scroll-behavior: smooth;
     -webkit-overflow-scrolling: touch;
-    touch-action: pan-x;
     scrollbar-width: none;
     padding-block: 0.25rem 0.5rem;
     scroll-padding-inline: calc(50vw - min(39vw, 9.5rem));
